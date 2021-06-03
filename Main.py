@@ -128,15 +128,15 @@ floor = pygame.transform.scale2x(floor)
 floor_x = 0
 
 # Bird 1
+bird_index = 0
+bird_flap = pygame.USEREVENT + 1 # Već imamo jedan USEREVENT, tako ako bi stvarali drugi samo + 1
+pygame.time.set_timer(bird_flap, 200)
 bird_downflap = pygame.transform.scale2x(pygame.image.load('FlappyBird_Python-master/assets/bluebird-downflap.png').convert())
 bird_midflap = pygame.transform.scale2x(pygame.image.load('FlappyBird_Python-master/assets/bluebird-midflap.png').convert())
 bird_upflap = pygame.transform.scale2x(pygame.image.load('FlappyBird_Python-master/assets/bluebird-upflap.png').convert())
 bird_frames = [bird_downflap, bird_midflap, bird_upflap]
-bird_index = 0
 bird_surface = bird_frames[bird_index]
 bird_rect = bird_surface.get_rect(center = (100, 400))
-bird_flap = pygame.USEREVENT + 1 # Već imamo jedan USEREVENT, tako ako bi stvarali drugi samo + 1
-pygame.time.set_timer(bird_flap, 200)
 # Bird 2
 bird_downflap1 = pygame.transform.scale2x(pygame.image.load('FlappyBird_Python-master/assets/redbird-downflap.png').convert())
 bird_midflap1 = pygame.transform.scale2x(pygame.image.load('FlappyBird_Python-master/assets/redbird-midflap.png').convert())
@@ -189,9 +189,9 @@ while True:
             else:
                 bird_index = 0
             if time_of_day:
-                bird_surface, bird_rect = bird_animation()
-            else:
                 bird_surface1, bird_rect1 = bird_animation1()
+            else:
+                bird_surface, bird_rect = bird_animation()
         if event.type == pygame.MOUSEBUTTONDOWN and not game_active:
             if pygame.mouse.get_pressed()[0]:
                 if pygame.mouse.get_pos()[0] >= 159 and pygame.mouse.get_pos()[0] <= 237 and pygame.mouse.get_pos()[1] >= 237 and pygame.mouse.get_pos()[1] <= 286:
@@ -209,16 +209,16 @@ while True:
 
         # Bird
         bird_movment += gravity
+        bird_rect1.centery += bird_movment
+        bird_rect.centery += bird_movment
         if time_of_day:
             rotated_bird = rotate_bird(bird_surface1)
-            bird_rect1.centery += bird_movment
             screen.blit(rotated_bird, bird_rect1)
 
             # Colide 1
             game_active = check_collision1(pipe_list)
         else:
             rotated_bird = rotate_bird(bird_surface)
-            bird_rect.centery += bird_movment
             screen.blit(rotated_bird, bird_rect)
 
             # Colide 2
