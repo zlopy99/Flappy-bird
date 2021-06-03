@@ -94,11 +94,18 @@ def update_score(score, high_score):
         high_score = score
     return high_score
 
+def display_fps():
+    C = str(int(clock.get_fps()))
+    FPS_surface = game_font_FPS.render('FPS: ' + C, True, (255, 255, 255))
+    FPS_rect = FPS_surface.get_rect(topleft = (10, 10))
+    screen.blit(FPS_surface, FPS_rect)
+
 pygame.mixer.pre_init(frequency = 44100, size = -16, channels = 1, buffer = 212)
 pygame.init()                  # width height
 screen = pygame.display.set_mode((600, 800))
 clock = pygame.time.Clock()
 game_font = pygame.font.Font('FlappyBird_Python-master/04B_19.TTF', 40)
+game_font_FPS = pygame.font.Font('FlappyBird_Python-master/04B_19.TTF', 25)
 
 # Game Varijable
 gravity = 0.25
@@ -224,6 +231,9 @@ while True:
 
         # Score
         score_dispaly('main_game')
+
+        # FPS
+        display_fps()
     else:
         high_score = update_score(score, high_score)
         score_dispaly('game_over')
@@ -233,6 +243,9 @@ while True:
 
         # Day - Night
         day_night()
+
+        # FPS
+        display_fps()
 
     # Floor
     floor_x -= 1
